@@ -26,7 +26,7 @@ const authMiddleware = async (req, res, next) => {
         next();
       })
       .catch(error => {
-        console.error('error:', error);
+        console.error('error:', error.message);
         res.status(401).send('Authentication failed');
       });
   } else {
@@ -80,7 +80,7 @@ app.get('/heroes', authMiddleware, async (req, res) => {
       }
     })
     .catch(error => {
-      console.error('error:', error);
+      console.error('error:', error.message);
       res.status(500).json({ message: error.message });
     });
 });
@@ -100,9 +100,11 @@ app.get('/heroes/:heroId', authMiddleware, async (req, res) => {
       res.json({ heroes: heroData })
     })
     .catch(error => {
-      console.error('error:', error);
+      console.error('error:', error.message);
       res.status(500).json({ message: error.message });
     });
 });
 
 app.listen(port)
+
+module.exports=app
