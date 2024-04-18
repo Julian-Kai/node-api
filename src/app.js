@@ -6,7 +6,7 @@ const mockHero = require('./mockHero')
 const mockProfile = require('./mockProfile')
 
 let port = 3000;
-let isMock = true;
+let isMock = true;  // 控制使用 mockData 或是調用 hahow heroku api
 
 const authMiddleware = async (req, res, next) => {
   const { headers } = req;
@@ -20,7 +20,7 @@ const authMiddleware = async (req, res, next) => {
       'password': password
     }
 
-    const isAuth = (isMock ? getMockAuth() : axios.post('https://hahow-recruit.herokuapp.com/auth', {}, { headers: authHeaders }))
+    const isAuth = (isMock ? getMockAuth(name, password) : axios.post('https://hahow-recruit.herokuapp.com/auth', {}, { headers: authHeaders }))
       .then(_ => {
         req.isAuthenticated = true
         next();
@@ -34,8 +34,12 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-const getMockAuth = async () => {
-  return null
+const getMockAuth = async (name, password) => {
+  if (name == 'hahow' && password == 'rocks') {
+    return null
+  } else {
+    throw new Error('Authentication failed');
+  }
 }
 
 const getMockHero = async (index) => {
