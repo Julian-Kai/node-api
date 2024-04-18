@@ -1,5 +1,7 @@
+.PHONY: run
 run:
-	@npm start
+	@npm install && npm start
 
+.PHONY: test
 test:
 	@npm test
